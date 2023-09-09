@@ -21,15 +21,20 @@ const Text: React.FC<TextProps> = ({
   };
 
   const sizeClasses: any = {
+    xs: "text-xs",
     sm: "text-sm",
     md: "text-md",
     lg: "text-lg",
+    xl: "text-xl",
+    "2xl": "text-2xl",
+    "3xl": "text-3xl",
   };
 
   const colorClasses: any = {
     black: "text-black",
     white: "text-white",
     gray: "text-gray-500",
+    green: "text-green-500",
   };
 
   const weightClasses: any = {

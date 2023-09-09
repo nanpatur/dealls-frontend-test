@@ -5,7 +5,7 @@ import React from "react";
 
 const menuItems = [
   { text: "Products", link: "/" },
-  { text: "Cart", link: "/cart" },
+  { text: "Cart", link: "/carts" },
 ];
 
 const Sidebar: React.FC = () => {

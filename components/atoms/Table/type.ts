@@ -7,6 +7,8 @@ export interface TableColumn<T> {
 export interface TableProps {
   data: any[];
   columns: TableColumn<any>[];
-  totalData: number;
-  limit: number;
+  totalData?: number;
+  limit?: number;
+  onPaginate?: (page: number) => void;
+  page?: number;
 }

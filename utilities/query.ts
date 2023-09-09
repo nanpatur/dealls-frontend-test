@@ -1,3 +1,4 @@
+import { QueryConfig } from "@/domains/commons/models";
 import { useState, useEffect } from "react";
 
 interface QueryResult<T> {
@@ -7,8 +8,9 @@ interface QueryResult<T> {
 }
 
 export const useQuery = <T>(
+  key: string | number | Array<string | number>,
   fetchFunction: () => Promise<T>,
-  config: { enabled?: boolean; initialData?: T } = { enabled: true }
+  config: QueryConfig<T> = { enabled: true }
 ): QueryResult<T> => {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +30,7 @@ export const useQuery = <T>(
     };
 
     config?.enabled && fetchData();
-  }, [config?.enabled]);
+  }, [config?.enabled, Array.isArray(key) ? key.join("") : key]);
 
   return { data, isLoading, error };
 };

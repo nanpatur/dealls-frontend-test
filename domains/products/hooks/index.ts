@@ -2,52 +2,46 @@
 
 import { useEffect, useState } from "react";
 import { ProductService } from "../services";
-import { Product, ProductResponse } from "../models";
+import { Product, ProductListResponse } from "../models";
 import { useQuery } from "@/utilities/query";
+import { QueryParams } from "@/domains/commons/models";
 
 export const useAllProducts = ({
   key,
-  config = { enabled: true },
-}: {
-  key?: string;
-  config?: { enabled?: boolean; initialData?: ProductResponse };
-}) => {
-  return useQuery<ProductResponse>(async () => {
-    const productService = new ProductService();
-    return productService.getAllProduct();
-  }, config);
+  config,
+  params,
+}: QueryParams<ProductListResponse>) => {
+  return useQuery<ProductListResponse>(
+    key,
+    async () => {
+      const productService = new ProductService();
+      return productService.getAllProduct(params);
+    },
+    config
+  );
 };
 
-export const useProduct = ({
-  key,
-  params,
-  config = { enabled: true },
-}: {
-  key: string;
-  params: { id: string };
-  config?: { enabled?: boolean; initialData?: Product };
-}) => {
-  const [data, setData] = useState<Product | null>(config?.initialData || null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
+export const useProductById = ({ key, config }: QueryParams<Product>) => {
+  return useQuery<Product>(
+    key,
+    async () => {
       const productService = new ProductService();
-      productService
-        .getProductById(params?.id)
-        .then((data) => {
-          setData(data);
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          setError(err.message);
-          setIsLoading(false);
-        });
-    };
-    config?.enabled && fetchData();
-  }, [config?.enabled, params?.id]);
+      return productService.getProductById(String(key));
+    },
+    config
+  );
+};
 
-  return { data, isLoading, error };
+export const useProductCategories = ({
+  key,
+  config,
+}: QueryParams<string[]>) => {
+  return useQuery<string[]>(
+    key,
+    async () => {
+      const productService = new ProductService();
+      return productService.getProductCategories();
+    },
+    config
+  );
 };

@@ -12,7 +12,7 @@ export interface Product {
   images: string[];
 }
 
-export interface ProductResponse {
+export interface ProductListResponse {
   products: Product[];
   total: number;
   limit: number;
