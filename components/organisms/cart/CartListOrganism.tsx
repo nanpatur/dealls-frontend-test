@@ -37,8 +37,8 @@ const CartListOrganism = () => {
           <div>
             <Text weight="bold">{Number(totalProducts)} products:</Text>
             <div className="pl-2">
-              {row?.products?.map((product) => (
-                <Text>- {product.title}</Text>
+              {row?.products?.map((product, i) => (
+                <Text key={i}>- {product.title}</Text>
               ))}
             </div>
           </div>
