@@ -5,10 +5,8 @@ import DataTable from "@/components/atoms/Table";
 import { TableColumn } from "@/components/atoms/Table/type";
 import Text from "@/components/atoms/Text";
 import { useAllCarts } from "@/domains/carts/hooks";
-import { Cart, ProductCart } from "@/domains/carts/models";
-import { Product } from "@/domains/products/models";
+import { Cart } from "@/domains/carts/models";
 import { formatCurrency } from "@/utilities/currency";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
@@ -50,43 +48,6 @@ const CartListOrganism = () => {
         title: "Total Quantity",
         dataKey: "totalQuantity",
       },
-      //   {
-      //     title: "Product List",
-      //     dataKey: "id",
-      //     render: (id, row) => {
-      //       return (
-      //         <div className="flex flex-col gap-2">
-      //           {row?.products?.map((product) => (
-      //             <div className="flex flex-col mr-4 border border-gray-200 p-2 rounded-md">
-      //               <Text size="md" className="mt-2">
-      //                 {product?.title} -{" "}
-      //                 <b className="text-sm">
-      //                   {formatCurrency(product?.price)} x {product?.quantity}
-      //                 </b>
-      //               </Text>
-      //               {product?.discountPercentage > 0 && (
-      //                 <Text size="xs" className="mt-2 line-through">
-      //                   {formatCurrency(product?.total)}
-      //                 </Text>
-      //               )}
-      //               <Text size="md" weight="bold">
-      //                 {formatCurrency(product?.discountedPrice) ?? product?.total}
-      //               </Text>
-      //               {product?.discountPercentage > 0 && (
-      //                 <Text size="xs" color="green" weight="bold">
-      //                   Save{" "}
-      //                   {formatCurrency(
-      //                     product?.total - product?.discountedPrice
-      //                   )}{" "}
-      //                   ({product?.discountPercentage}%)
-      //                 </Text>
-      //               )}
-      //             </div>
-      //           ))}
-      //         </div>
-      //       );
-      //     },
-      //   },
       {
         title: "Total Price",
         dataKey: "total",
@@ -102,10 +63,13 @@ const CartListOrganism = () => {
         ),
       },
       {
-        title: "View detail button",
+        title: "",
         dataKey: "id",
         render: (id, row) => (
-          <Button onClick={() => router.push(`/carts/${id}`)}>
+          <Button
+            className="whitespace-nowrap"
+            onClick={() => router.push(`/carts/${id}`)}
+          >
             View detail
           </Button>
         ),

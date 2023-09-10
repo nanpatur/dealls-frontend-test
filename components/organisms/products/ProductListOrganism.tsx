@@ -1,13 +1,11 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
-import Button from "../../atoms/Button";
+import { useMemo, useState } from "react";
 import DataTable from "../../atoms/Table";
 import Text from "../../atoms/Text";
 import { TableColumn } from "../../atoms/Table/type";
 import { Product } from "@/domains/products/models";
 import Image from "next/image";
 import { useAllProducts, useProductCategories } from "@/domains/products/hooks";
-import { CartItem } from "@/domains/carts/models";
 import { formatCurrency } from "@/utilities/currency";
 import Spinner from "@/components/atoms/Spinner";
 import Input from "@/components/atoms/Input";
@@ -21,7 +19,6 @@ const ProductListOrganism = () => {
     limit: 10,
     page: 1,
   });
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const { data: categories } = useProductCategories({
     key: "useProductCategories",
@@ -45,67 +42,6 @@ const ProductListOrganism = () => {
       category: "",
     });
   };
-
-  const handleAddToCart = useCallback(
-    (product: Product) => {
-      const existItem = cartItems.findIndex(
-        (item) => item.productId === product.id
-      );
-
-      if (existItem !== -1) {
-        const newCartItems = [...cartItems];
-        newCartItems[existItem] = {
-          ...newCartItems[existItem],
-          quantity: newCartItems[existItem].quantity + 1,
-        };
-        setCartItems(newCartItems);
-      } else {
-        setCartItems((prev) => [
-          ...prev,
-          {
-            productId: product.id,
-            quantity: 1,
-            price: product.price,
-            title: product.title,
-            thumbnail: product.thumbnail,
-          },
-        ]);
-      }
-    },
-    [cartItems]
-  );
-
-  const handleRemoveFromCart = useCallback(
-    (product: Product) => {
-      const existItem = cartItems.find((item) => item.productId === product.id);
-
-      if (existItem) {
-        if (existItem.quantity === 1) {
-          const newCartItems = cartItems.filter(
-            (item) => item.productId !== product.id
-          );
-          setCartItems(newCartItems);
-        } else {
-          const newCartItems = cartItems.map((item) =>
-            item.productId === product.id
-              ? { ...existItem, quantity: existItem.quantity - 1 }
-              : item
-          );
-          setCartItems(newCartItems);
-        }
-      }
-    },
-    [cartItems]
-  );
-
-  const totalProductGroupedByIdInCart = useMemo(() => {
-    return cartItems.reduce((acc: any, item) => {
-      return {
-        ...acc,
-        [item.productId]: (acc[item.productId] || 0) + item.quantity,
-      };
-    }, {});
-  }, [cartItems]);
 
   const categoryOptions = useMemo(() => {
     return categories
@@ -154,42 +90,8 @@ const ProductListOrganism = () => {
       },
       { title: "Description", dataKey: "description" },
       { title: "Stock", dataKey: "stock" },
-      {
-        title: "",
-        dataKey: "id",
-        render: (id, row) =>
-          totalProductGroupedByIdInCart[Number(id)] > 0 ? (
-            <div className="flex items-center gap-2 w-full">
-              <Button
-                className="whitespace-nowrap"
-                onClick={() => handleRemoveFromCart(row)}
-                color="netral"
-              >
-                -
-              </Button>
-              <Text className="mx-2 flex-1" align="center">
-                {totalProductGroupedByIdInCart[Number(id)]}
-              </Text>
-              <Button
-                className="whitespace-nowrap"
-                onClick={() => handleAddToCart(row)}
-                color="netral"
-              >
-                +
-              </Button>
-            </div>
-          ) : (
-            <Button
-              className="whitespace-nowrap"
-              onClick={() => handleAddToCart(row)}
-            >
-              + Add to cart
-              {totalProductGroupedByIdInCart[Number(id)]}
-            </Button>
-          ),
-      },
     ],
-    [totalProductGroupedByIdInCart, handleAddToCart, handleRemoveFromCart]
+    []
   );
 
   return (
@@ -203,15 +105,15 @@ const ProductListOrganism = () => {
         </div>
       ) : (
         <div>
-          <div className="flex justify-end gap-4 py-4">
+          <div className="flex flex-col xl:flex-row justify-end gap-4 py-4">
             <Input
               type="text"
               placeholder="Search..."
               value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
               onEnter={handleSearch}
+              className="w-full xl:w-60"
               prefixIcon={
-                // search icon
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5 text-gray-400"
@@ -234,6 +136,7 @@ const ProductListOrganism = () => {
                 setSearchKeyword("");
               }}
               placeholder="Select category"
+              className="w-full xl:w-60"
             />
           </div>
 

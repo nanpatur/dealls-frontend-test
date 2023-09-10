@@ -1,21 +1,19 @@
 "use client";
 import Text from "@/components/atoms/Text";
+import { menuItems } from "@/utilities/constant";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-
-const menuItems = [
-  { text: "Products", link: "/" },
-  { text: "Cart", link: "/carts" },
-];
 
 const Sidebar: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
 
   return (
-    <div className="bg-white h-screen w-1/4 2xl:w-1/6 pt-10 shadow-md flex flex-col">
+    <div className="bg-white h-screen w-1/4 2xl:w-1/6 pt-10 shadow-md hidden lg:flex flex-col">
       <div className="mb-4 px-4">
-        <h2 className="text-2xl font-semibold uppercase">Dealls Shop</h2>
+        <Text size="2xl" weight="bold" className="uppercase">
+          Dealls Shop
+        </Text>
       </div>
       <ul className="flex-1 px-4">
         {menuItems.map((item, index) => (
@@ -29,20 +27,11 @@ const Sidebar: React.FC = () => {
             }`}
           >
             <span className={`flex-1 font-bold`}>{item.text}</span>
-            {/* counter item in cart */}
-            {item.text === "Cart" && (
-              <span
-                className={`ml-2 px-2 py-1 rounded-full bg-red-500 text-white text-xs`}
-              >
-                3
-              </span>
-            )}
           </li>
         ))}
       </ul>
       <div className="flex items-center p-4 bg-gray-100">
         <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
-          {/* text initial in the center of circle */}
           <Text className="text-center text-white" weight="bold">
             JD
           </Text>

@@ -25,6 +25,6 @@ export const useCartByID = ({ key, config, params }: QueryParams<Cart>) => {
       const cartService = new CartService();
       return cartService.getCartById(params?.cartID);
     },
-    { enabled: !!params?.cartID }
+    config
   );
 };

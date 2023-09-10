@@ -1,6 +1,3 @@
-// hooks for products domain using product services
-
-import { useEffect, useState } from "react";
 import { ProductService } from "../services";
 import { Product, ProductListResponse } from "../models";
 import { useQuery } from "@/utilities/query";

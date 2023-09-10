@@ -29,7 +29,7 @@ export const useQuery = <T>(
       }
     };
 
-    config?.enabled && fetchData();
+    !!config?.enabled && fetchData();
   }, [config?.enabled, Array.isArray(key) ? key.join("") : key]);
 
   return { data, isLoading, error };
